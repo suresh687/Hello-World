@@ -1,0 +1,115 @@
+package login;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.concurrent.TimeUnit;
+
+import org.bouncycastle.asn1.ASN1Enumerated;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+import cucumber.api.PendingException;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import pagebean.HotelLoginPageFactory;
+
+public class StepDefinationLogins {
+	private WebDriver driver;
+	private HotelLoginPageFactory hlpf;
+	@Given("^User already registered and has username and password$")
+	public void user_already_registered_and_has_username_and_password() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		driver=new FirefoxDriver();
+	   driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	   hlpf=new HotelLoginPageFactory(driver);
+	   driver.get("file:///D:/Materials/New%20folder/Module%203/hotelBooking/login.html/");
+		// throw new PendingException();
+	}
+
+	@When("^user enters valid username and password and submits$")
+	public void user_enters_valid_username_and_password_and_submits() throws Throwable {
+	    hlpf.setPfuname("capgemini");
+	    hlpf.setPfuname("capg1234");
+	    hlpf.setPfbtn();
+	    driver.close();
+		// Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
+	}
+
+	@Then("^we are directed to booking page$")
+	public void we_are_directed_to_booking_page() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
+		driver.navigate().to("file:///D:/Materials/New%20folder/Module%203/hotelBooking/hotelbooking.html");
+		driver.close();
+	}
+
+	@When("^user leaves username null or empty or wrong username$")
+	public void user_leaves_username_null_or_empty_or_wrong_username() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    hlpf.setPfuname("");
+	    hlpf.setPfbtn();
+	    driver.close();
+	    
+	}
+
+	@Then("^we will get error message$")
+	public void we_will_get_error_message() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
+		String str=driver.findElement(By.xpath(".//*[@id='userErrMsg']")).getText();
+		assertEquals(str,"* Please enter userName.");
+	}
+
+	@When("^user leaves password null or empty or wrong username$")
+	public void user_leaves_password_null_or_empty_or_wrong_username() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		hlpf.setPfuname("capgemini");
+		hlpf.setPfpwd("");
+		hlpf.setPfbtn();
+		driver.close();
+	}
+	@Then("^we will get error messages$")
+	public void we_will_get_error_messages() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
+		String str1=driver.findElement(By.xpath(".//*[@id='pwdErrMsg']")).getText();
+		assertEquals(str1,"* Please enter password.");
+	}
+	@When("^user enters wrong username$")
+	public void user_enters_wrong_username() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		hlpf.setPfuname("capg");
+		hlpf.setPfpwd("capg1234");
+		hlpf.setPfbtn();
+		//driver.close();
+	   
+	}
+
+	@Then("^we will get alert box$")
+	public void we_will_get_alert_box() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	 String a=driver.switchTo().alert().getText();
+	 System.out.println(a);
+	 driver.switchTo().alert().accept();
+	 driver.close();
+	 
+	}
+
+	@When("^user enters wrong password$")
+	public void user_enters_wrong_password() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		hlpf.setPfuname("capgemini");
+		hlpf.setPfpwd("cap");
+		hlpf.setPfbtn();
+		//driver.close();
+	    
+	}
+
+
+
+
+}
